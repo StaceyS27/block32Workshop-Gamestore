@@ -62,7 +62,16 @@ async function updateVideoGame(id, fields = {}) {
 
 // DELETE - /api/video-games/:id - delete a single video game by id
 async function deleteVideoGame(id) {
-    // LOGIC GOES HERE
+    try {
+        const {rows: [videoGame]} = await client.query(`
+            DELETE FROM videogames
+            WHERE id=$1
+            RETURNING *;
+        `, [id]);
+        return videoGame;
+    } catch (error) {
+        throw error;
+    }
 }
 
 module.exports = {

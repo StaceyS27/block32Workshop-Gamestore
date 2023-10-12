@@ -8,6 +8,7 @@ const { getAllVideoGames,
     createVideoGame,
     updateVideoGame,
     deleteVideoGame } = require('../db/videoGames');
+const { deleteBoardGame } = require('../db/boardGames');
 
 // GET - /api/video-games - get all video games
 router.get('/', async (req, res, next) => {
@@ -52,7 +53,12 @@ router.put('/:id', async (req, res, next) => {
 
 // DELETE - /api/video-games/:id - delete a single video game by id
 router.delete('/:id', async (req, res, next) => {
-    // LOGIC GOES HERE
+    try {
+        const videoGame = await deleteVideoGame(req.params.id);
+        res.send(videoGame);
+    } catch (error) {
+        next (error);
+    }
 });
 
 module.exports = router;
